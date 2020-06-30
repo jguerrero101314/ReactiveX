@@ -1,12 +1,12 @@
 import { of , from} from 'rxjs';
-import { distinct } from 'rxjs/operators';
+import { distinct, distinctUntilChanged } from 'rxjs/operators';
 
 
-const numeros$ = of(1,1,1,3,3,2,2,4,4,5,3,1);
+const numeros$ = of<number|string>(1,'1',1,3,3,2,2,4,4,5,3,1);
 
 numeros$
     .pipe(
-        distinct()
+        distinctUntilChanged()
     )
 .subscribe(console.log);
 
@@ -15,7 +15,7 @@ interface Personaje {
 }
 const personajes: Personaje[] = [
     {
-        nombre: 'X'
+        nombre: 'Megaman'
     },
     {
         nombre: 'Megaman'
@@ -38,6 +38,6 @@ const personajes: Personaje[] = [
 
 from( personajes )
 .pipe(
-    distinct( p => p.nombre )
+    distinctUntilChanged( ( ant, act ) => ant.nombre === act.nombre )
 )
 .subscribe(console.log)
